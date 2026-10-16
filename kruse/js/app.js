@@ -50,8 +50,10 @@
   /* Hero: Bild wird wie mit der Rolle aufgetragen */
   var hero = gsap.timeline({ paused: true, defaults: { ease: E } });
   hero.to('.hw', { y: 0, duration: 1.3, stagger: 0.12 })
-      .to('.tri__f--c img', { clipPath: 'inset(0 0 0% 0)', duration: 1.4, ease: EIO }, 0.35)
-      .to('.tri__f--l img, .tri__f--r img', { clipPath: 'inset(0 0 0% 0)', duration: 1.4, ease: EIO, stagger: 0.12 }, 0.55)
+      .fromTo('.roll i', { scaleX: 0, transformOrigin: 'left center' }, { scaleX: 1, duration: 0.7, ease: 'power3.inOut', stagger: 0.07 }, 0.3)
+      .set('.roll i', { transformOrigin: 'right center' })
+      .to('.roll i', { scaleX: 0, duration: 0.8, ease: 'power3.inOut', stagger: 0.07 }, '>0.05')
+      .from('.tri__f img', { scale: 1.2, duration: 1.8, ease: E }, '<')
       .to('[data-hero]', { opacity: 1, duration: 1, stagger: 0.08 }, 0.6)
       .from('[data-hero]', { y: 22, duration: 1.1, stagger: 0.08 }, 0.6);
 
@@ -102,6 +104,60 @@
     gsap.fromTo(f.querySelector('.wk__in'), { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.3, ease: EIO, scrollTrigger: { trigger: f, start: 'top 88%', once: true } });
     gsap.fromTo(f.querySelector('img'), { scale: 1.18 }, { scale: 1, duration: 1.8, ease: E, scrollTrigger: { trigger: f, start: 'top 88%', once: true } });
   });
+
+  /* Satz füllt sich beim Scrollen Wort für Wort mit Farbe */
+  var ft = document.querySelector('.fill__txt');
+  if (ft) {
+    var wrapWords = function (node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+        if (n.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(function (p) {
+            if (!p) return;
+            if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(p)); return; }
+            var s = document.createElement('span'); s.className = 'w'; s.textContent = p;
+            if (node.classList && node.classList.length) node.classList.forEach(function (cl) { s.classList.add(cl); });
+            frag.appendChild(s);
+          });
+          n.parentNode.replaceChild(frag, n);
+        } else if (n.nodeType === 1) wrapWords(n);
+      });
+    };
+    wrapWords(ft);
+    var ws = ft.querySelectorAll('.w');
+    ScrollTrigger.create({ trigger: '.fill', start: 'top 70%', end: 'bottom 60%', scrub: true,
+      onUpdate: function (s) { var n = Math.round(s.progress * ws.length); ws.forEach(function (w, i) { w.classList.toggle('on', i < n); }); } });
+  }
+
+  /* Signatur: der Farbfächer öffnet sich */
+  var cards = gsap.utils.toArray('.fan__c');
+  cards.forEach(function (c) { c.style.background = c.getAttribute('data-bg'); });
+  mm.add('(min-width: 961px)', function () {
+    var n = cards.length, spread = 124;
+    gsap.set(cards, { rotate: 0 });
+    var tl = gsap.timeline({ scrollTrigger: { trigger: '.svc', start: 'top top', end: '+=140%', pin: '.svc__pin', scrub: 0.7 } });
+    tl.to(cards, { rotate: function (i) { return -spread / 2 + i * spread / (n - 1); }, ease: 'power2.out', duration: 1 });
+    cards.forEach(function (c) {
+      c.addEventListener('mouseenter', function () { gsap.to(c, { y: -40, duration: 0.4, ease: E }); });
+      c.addEventListener('mouseleave', function () { gsap.to(c, { y: 0, duration: 0.6, ease: E }); });
+    });
+  });
+  mm.add('(max-width: 960px)', function () {
+    gsap.from(cards, { y: 60, opacity: 0, duration: 0.8, ease: E, stagger: 0.04, scrollTrigger: { trigger: '.fan', start: 'top 85%', once: true } });
+  });
+
+  /* Pinsel-Cursor in den Logofarben */
+  var brush = document.querySelector('.brush');
+  if (brush && !touch) {
+    d.classList.add('has-brush');
+    var cols = ['#d6262c', '#2b7bc6', '#f3d21c'], ci = 0;
+    var bx = gsap.quickTo(brush, 'x', { duration: 0.35, ease: 'power3' }), by = gsap.quickTo(brush, 'y', { duration: 0.35, ease: 'power3' });
+    window.addEventListener('mousemove', function (e) { bx(e.clientX); by(e.clientY); });
+    document.querySelectorAll('a, button, .fan__c, .compare').forEach(function (el) {
+      el.addEventListener('mouseenter', function () { ci = (ci + 1) % 3; brush.style.background = cols[ci]; brush.classList.add('big'); });
+      el.addEventListener('mouseleave', function () { brush.classList.remove('big'); });
+    });
+  }
 
   if (!touch) {
     document.querySelectorAll('.magnet').forEach(function (b) {
