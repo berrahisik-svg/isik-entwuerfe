@@ -54,8 +54,8 @@ a{color:inherit}
 .top{position:fixed;left:0;right:0;top:0;z-index:60;display:flex;align-items:center;gap:32px;padding:16px calc(var(--gr) + var(--pad) - 16px) 16px calc(var(--gl) + var(--pad) - 16px);transition:transform .5s var(--ease),background .4s var(--ease)}
 .top.is-solid{background:rgba(238,240,243,.94)}
 .top.is-hidden{transform:translateY(-110%)}
-.top__logo{display:block;padding:6px 10px;background:#000}
-.top__logo img{height:46px;width:auto}
+.top__logo{display:block;position:relative}
+.top__logo img{height:52px;width:auto;transition:opacity .35s var(--ease)}
 .top__links{margin-left:auto;display:flex;gap:36px}
 .top__links a{text-decoration:none;font-weight:600;font-size:16px;color:#fff;position:relative;transition:color .3s}
 .top.is-solid .top__links a{color:var(--ink)}
@@ -134,7 +134,8 @@ a{color:inherit}
 .step h3{margin:0 0 6px;font:800 clamp(28px,2.6vw,44px)/1 var(--sans);letter-spacing:-.04em}
 .step p{margin:0;color:var(--ink2);max-width:40ch}
 .mosaic{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(6,1fr);aspect-ratio:3/2;background:var(--stone2)}
-.mosaic i{display:block;background-repeat:no-repeat;background-size:800% 600%}
+.mosaic{perspective:1200px}
+.mosaic i{display:block;background-repeat:no-repeat;background-size:800% 600%;backface-visibility:hidden}
 
 /* Bereiche als Kartenstapel */
 .areas{padding-top:clamp(110px,12vw,180px)}
@@ -197,7 +198,7 @@ a{color:inherit}
 @media (max-width:960px){
   .top__links{display:none}
   .top__menu{display:grid}
-  .top__logo img{height:36px}
+  .top__logo img{height:40px}
   .hero__rate{top:96px}
   .hero__rate b{font-size:44px}
   .hero__call{width:100%}

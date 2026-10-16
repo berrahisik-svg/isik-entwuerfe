@@ -2,14 +2,19 @@
 (function () {
   var d = document.documentElement;
 
-  /* Mosaik: das Bild wird in 8 x 6 Fliesen geteilt */
-  var mo = document.querySelector('.mosaic');
+  /* Mosaik: 8 x 6 Fliesen, jeder Schritt hat sein eigenes Foto (Stile per JS, damit die Sicherheitsregeln greifen) */
+  var mo = document.querySelector('.mosaic'), IMGS = [];
   if (mo) {
-    var src = mo.getAttribute('data-img').replace(/^\//, ''), html = '';
-    for (var r = 0; r < 6; r++) for (var c = 0; c < 8; c++)
-      html += '<i style="background-image:url(' + src + ');background-position:' + (c / 7 * 100) + '% ' + (r / 5 * 100) + '%"></i>';
-    mo.innerHTML = html;
+    IMGS = mo.getAttribute('data-imgs').split(',');
+    for (var r = 0; r < 6; r++) for (var c = 0; c < 8; c++) {
+      var t = document.createElement('i');
+      t.style.backgroundImage = 'url(' + IMGS[0] + ')';
+      t.style.backgroundPosition = (c / 7 * 100) + '% ' + (r / 5 * 100) + '%';
+      mo.appendChild(t);
+    }
+    IMGS.forEach(function (s) { var im = new Image(); im.src = s; });
   }
+  var setImg = function (tiles, k) { tiles.forEach(function (t) { t.style.backgroundImage = 'url(' + IMGS[k] + ')'; }); };
 
   /* Menü am Handy */
   var mb = document.querySelector('.top__menu'), menu = document.getElementById('menu');
@@ -86,20 +91,36 @@
   gsap.fromTo('.ap--big img', { scale: 1.2 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '.about', start: 'top bottom', end: 'bottom top', scrub: true } });
   gsap.fromTo('.ap--small', { yPercent: 30 }, { yPercent: -20, ease: 'none', scrollTrigger: { trigger: '.about', start: 'top bottom', end: 'bottom top', scrub: true } });
 
-  /* Signatur: Fliese für Fliese. Das Bild ist von Anfang an schwach sichtbar und wird verlegt */
+  /* Signatur: Schritt 1 wird Fliese für Fliese verlegt, bei Schritt 2 und 3 drehen sich die Fliesen zum nächsten Foto */
   var tiles = gsap.utils.toArray('.mosaic i');
   var steps = gsap.utils.toArray('.step');
   var order = tiles.map(function (t, i) { return { t: t, k: (i % 8) + Math.floor(i / 8) * 1.3 + Math.random() * 1.1 }; })
                    .sort(function (a, b) { return a.k - b.k; }).map(function (o) { return o.t; });
+  var cur = 0, flipping = null;
+  var flipTo = function (k) {
+    if (k === cur) return; cur = k;
+    if (flipping) flipping.kill();
+    flipping = gsap.timeline()
+      .to(order, { rotateY: 90, duration: 0.2, ease: 'power2.in', stagger: 0.006 })
+      .add(function () { setImg(tiles, k); })
+      .fromTo(order, { rotateY: -90 }, { rotateY: 0, duration: 0.32, ease: 'power2.out', stagger: 0.006, immediateRender: false });
+  };
   mm.add('(min-width: 961px)', function () {
     gsap.set(tiles, { opacity: 0.18, scale: 0.86, rotate: function () { return gsap.utils.random(-10, 10); } });
-    var tl = gsap.timeline({ scrollTrigger: { trigger: '.lay', start: 'top top', end: '+=160%', pin: '.lay__pin', scrub: 0.6,
-      onUpdate: function (s) { var i = Math.min(2, Math.floor(s.progress * 3)); steps.forEach(function (st, k) { st.classList.toggle('is-on', k === i); }); } } });
-    tl.to(order, { opacity: 1, scale: 1, rotate: 0, duration: 0.3, ease: 'power2.out', stagger: { each: 0.03 } });
-    return function () { gsap.set(tiles, { clearProps: 'all' }); };
+    var tl = gsap.timeline({ scrollTrigger: { trigger: '.lay', start: 'top top', end: '+=200%', pin: '.lay__pin', scrub: 0.6,
+      onUpdate: function (s) {
+        var i = s.progress < 0.4 ? 0 : (s.progress < 0.72 ? 1 : 2);
+        steps.forEach(function (st, n) { st.classList.toggle('is-on', n === i); });
+        flipTo(i);
+      } } });
+    tl.to(order, { opacity: 1, scale: 1, rotate: 0, duration: 0.3, ease: 'power2.out', stagger: { each: 0.008 } })
+      .to({}, { duration: 1.2 });
+    return function () { gsap.set(tiles, { clearProps: 'opacity,transform' }); };
   });
   mm.add('(max-width: 960px)', function () {
     gsap.from(order, { opacity: 0.15, scale: 0.6, duration: 0.6, ease: 'back.out(1.4)', stagger: 0.015, scrollTrigger: { trigger: '.mosaic', start: 'top 80%', once: true } });
+    var k = 0, timer = setInterval(function () { k = (k + 1) % IMGS.length; flipTo(k); steps.forEach(function (st, n) { st.classList.toggle('is-on', n === k); }); }, 3200);
+    return function () { clearInterval(timer); };
   });
 
   /* Bereiche: Karten stapeln sich, die vorige wird kleiner */
