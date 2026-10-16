@@ -1,0 +1,185 @@
+/* Penev-Dach · Entwurf Isik Designs
+   Leitmotiv: der Dachgiebel aus dem Logo. Das Intro zeichnet die Dachlinie, das Titelbild öffnet sich
+   wie ein Giebel, die Kupferlinie trennt die Kapitel. Farben: Kupfer aus dem Logo, Holzton, reines Schwarz. */
+
+@font-face{font-family:"Young Serif";font-weight:400;font-display:swap;src:url(../fonts/young-serif-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Young Serif";font-weight:400;font-display:swap;src:url(../fonts/young-serif-latin-ext-400-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+1E00-1E9F}
+@font-face{font-family:"Onest";font-weight:400;font-display:swap;src:url(../fonts/onest-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Onest";font-weight:500;font-display:swap;src:url(../fonts/onest-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Onest";font-weight:600;font-display:swap;src:url(../fonts/onest-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Onest";font-weight:400;font-display:swap;src:url(../fonts/onest-latin-ext-400-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+1E00-1E9F}
+@font-face{font-family:"Plex Mono";font-weight:500;font-display:swap;src:url(../fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2")}
+
+:root{
+  --bg:#000;
+  --s1:#0d0b09;
+  --fg:#f4efe7;
+  --fg2:#d8cfc2;
+  --cu:#b86b45;
+  --cu2:#cc7c53;
+  --wood:#e3c49c;
+  --line:rgba(244,239,231,.14);
+  --display:"Young Serif",Georgia,serif;
+  --body:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Plex Mono",ui-monospace,Menlo,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --ease-io:cubic-bezier(.76,0,.24,1);
+  --gl:max(16px,env(safe-area-inset-left,0px));
+  --gr:max(16px,env(safe-area-inset-right,0px));
+  --pad:clamp(20px,4vw,56px);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 clamp(17px,1.15vw,19px)/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--cu2);outline-offset:4px}
+.wrap{width:100%;max-width:1360px;margin:0 auto;padding-left:calc(var(--gl) + var(--pad) - 16px);padding-right:calc(var(--gr) + var(--pad) - 16px)}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--wood);margin:0}
+.eyebrow--dark{color:#3b200f}
+.h2{font:400 clamp(42px,5.6vw,92px)/1 var(--display);letter-spacing:-.015em;margin:0;text-wrap:balance}
+.sw{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
+.sw>span{display:inline-block}
+.failsafe .sw>span{transform:none!important}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 28px;font:600 15px/1 var(--body);text-decoration:none;transition:background .25s var(--ease)}
+.btn span{display:inline-block}
+.btn--cu{background:var(--cu);color:#fff}
+.btn--cu:hover{background:var(--cu2)}
+
+/* Intro: die Dachlinie zeichnet sich */
+.intro{position:fixed;inset:0;z-index:100;background:#000;display:none;place-items:center}
+.js .intro{display:grid}
+.intro.is-done,.failsafe .intro,.no-intro .intro{display:none!important}
+.intro__roof{width:min(70vw,520px);overflow:visible}
+.intro__roof polyline{fill:none;stroke:var(--cu);stroke-width:10;stroke-linejoin:miter;stroke-linecap:square}
+
+.nav{position:fixed;left:0;right:0;top:0;z-index:50;padding-top:env(safe-area-inset-top,0px);border-bottom:1px solid transparent;transition:background .4s var(--ease),transform .5s var(--ease),border-color .4s}
+.nav.is-solid{background:rgba(0,0,0,.94);border-bottom-color:var(--line)}
+.nav.is-hidden{transform:translateY(-100%)}
+.nav__in{display:flex;align-items:center;gap:24px;min-height:84px}
+.nav__logo img{height:50px;width:auto}
+.nav__links{display:flex;gap:34px;margin-left:auto}
+.nav__links a{text-decoration:none;font-weight:500;color:var(--fg2);transition:color .2s}
+.nav__links a:hover{color:var(--fg)}
+
+/* Hero: das Bild öffnet sich wie ein Giebel */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden}
+.hero__media{position:absolute;inset:0;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.js .hero__media{clip-path:polygon(50% 30%,50% 30%,100% 100%,0 100%)}
+.failsafe .hero__media{clip-path:none!important}
+.hero__img{width:100%;height:100%;object-fit:cover;object-position:60% 40%}
+.hero__shade{position:absolute;inset:0;background:rgba(0,0,0,.46)}
+.hero__in{position:relative;padding-block:150px clamp(48px,7vw,96px)}
+.hero__title{margin:0;font:400 clamp(60px,9.4vw,158px)/.94 var(--display);letter-spacing:-.02em}
+.hero__kicker{display:block;font:500 13px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--wood);margin-bottom:26px}
+.hl{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.hw{display:inline-block}
+.hw em{font-style:normal;color:var(--cu2)}
+.hero__row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end;margin-top:clamp(28px,4vw,48px)}
+.hero__lead{margin:0;max-width:40ch;font-size:clamp(17px,1.35vw,20px)}
+.hero__cta{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.hero__rating{margin:0;color:var(--wood);letter-spacing:.06em;font-size:14px}
+.hero__rating strong{font:400 26px/1 var(--display);color:var(--fg);letter-spacing:0;margin-right:6px}
+.hero__rating span{color:var(--fg2);letter-spacing:0;margin-left:6px}
+
+/* Leistungen */
+.services{padding-block:clamp(96px,12vw,180px)}
+.services__head{max-width:900px;margin-bottom:clamp(40px,5vw,72px)}
+.peak{width:clamp(120px,14vw,200px);height:auto;margin-bottom:22px;overflow:visible}
+.peak polyline{fill:none;stroke:var(--cu);stroke-width:6}
+.sgrid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.svc{padding:clamp(24px,3vw,40px) clamp(16px,2vw,28px) clamp(28px,3vw,44px) 0;border-bottom:1px solid var(--line);position:relative}
+.svc:nth-child(3n+2),.svc:nth-child(3n){padding-left:clamp(16px,2vw,28px);border-left:1px solid var(--line)}
+.svc h3{margin:0 0 10px;font:400 clamp(24px,2.2vw,34px)/1.1 var(--display);transition:color .3s}
+.svc p{margin:0;color:var(--fg2);max-width:34ch}
+.svc::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--cu);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.svc:hover::after{transform:scaleX(1)}
+.svc:hover h3{color:var(--cu2)}
+
+/* Projekte, horizontal am Desktop */
+.projects__pin{overflow:hidden;padding-block:clamp(40px,6vw,80px)}
+.projects__head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,52px)}
+.track{display:flex;gap:clamp(14px,2vw,28px);width:max-content;padding-left:calc(var(--gl) + var(--pad) - 16px);padding-right:calc(var(--gr) + var(--pad) - 16px)}
+.ph{margin:0;flex:none}
+.ph--w{width:clamp(320px,48vw,760px)}
+.ph--t{width:clamp(240px,28vw,440px)}
+.ph__in{overflow:hidden;background:#111}
+.ph--w .ph__in{aspect-ratio:4/3}
+.ph--t .ph__in{aspect-ratio:3/4}
+.ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.ph:hover img{transform:scale(1.04)}
+.ph figcaption{margin-top:12px;font:500 12px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg2)}
+
+/* Zimmerei */
+.shop{padding-block:clamp(96px,12vw,180px)}
+.shop__grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(32px,6vw,96px);align-items:center}
+.shop__img{margin:0;overflow:hidden;aspect-ratio:4/3}
+.shop__img img{width:100%;height:115%;object-fit:cover}
+.shop__copy .h2{margin:16px 0 24px}
+.shop__copy p{margin:0;max-width:44ch;color:var(--fg2)}
+
+/* Ablauf als Zeitstrahl */
+.steps{padding-block:0 clamp(96px,12vw,180px)}
+.steps .h2{margin-bottom:clamp(44px,5vw,80px)}
+.timeline{position:relative}
+.timeline__rail{position:absolute;left:0;right:0;top:9px;height:2px;background:var(--line)}
+.timeline__rail span{display:block;height:100%;background:var(--cu);transform-origin:left}
+.js .timeline__rail span{transform:scaleX(0)}
+.failsafe .timeline__rail span{transform:none!important}
+.timeline ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(20px,3vw,48px)}
+.step{position:relative;padding-top:44px}
+.dot{position:absolute;left:0;top:2px;width:16px;height:16px;background:#000;border:2px solid var(--cu);transform:rotate(45deg)}
+.step h3{margin:0 0 8px;font:400 clamp(22px,1.9vw,28px)/1.15 var(--display)}
+.step p{margin:0;color:var(--fg2)}
+
+/* Kontakt in Kupfer */
+.contact{background:var(--cu);color:#1a0d06}
+.contact__grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(32px,6vw,96px);align-items:end;padding-block:clamp(88px,11vw,160px)}
+.contact__title{margin:18px 0 28px;font:400 clamp(44px,6vw,98px)/1 var(--display);text-wrap:balance}
+.contact__phone{display:inline-block;font:400 clamp(34px,4.6vw,72px)/1 var(--display);text-decoration:none;border-bottom:2px solid #1a0d06;padding-bottom:6px}
+.contact__facts{margin:0;display:grid;gap:22px}
+.contact__facts div{border-top:1px solid rgba(26,13,6,.3);padding-top:14px}
+.contact__facts dt{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.contact__facts dd{margin:0;font-weight:500;font-size:clamp(17px,1.3vw,20px)}
+
+.foot{padding-block:36px calc(36px + env(safe-area-inset-bottom,0px))}
+.foot__in{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;color:var(--fg2);font-size:15px}
+.foot__in img{height:44px;width:auto}
+.foot p{margin:0}
+.foot__draft{font:500 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase}
+.callbar{display:none}
+
+.js [data-hero],.js .rv{opacity:0}
+.js .hw{transform:translateY(108%)}
+.failsafe [data-hero],.failsafe .rv{opacity:1!important;transform:none!important}
+.failsafe .hw{transform:none!important}
+
+@media (max-width:960px){
+  .nav__links{display:none}
+  .nav__in{justify-content:space-between;min-height:68px}
+  .nav__logo img{height:42px}
+  .nav .btn{min-height:44px;padding:0 16px;font-size:13px}
+  .hero{min-height:92svh}
+  .hero__row,.shop__grid,.contact__grid{grid-template-columns:minmax(0,1fr)}
+  .sgrid{grid-template-columns:minmax(0,1fr)}
+  .svc,.svc:nth-child(3n+2),.svc:nth-child(3n){padding-left:0;border-left:0}
+  .timeline ol{grid-template-columns:minmax(0,1fr)}
+  .timeline__rail{left:7px;right:auto;top:0;bottom:0;width:2px;height:auto}
+  .timeline__rail span{transform-origin:top}
+  .step{padding:0 0 0 44px}
+  .track{width:auto;overflow-x:auto;scroll-snap-type:x mandatory}
+  .ph{scroll-snap-align:start}
+  .ph--w{width:84vw}.ph--t{width:62vw}
+  .callbar{display:flex;justify-content:center;position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--cu);color:#fff;text-decoration:none;font:600 16px/1 var(--body);padding:18px var(--gr) calc(18px + env(safe-area-inset-bottom,0px)) var(--gl)}
+  .foot{padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:520px){
+  .nav .btn span{font-size:0}
+  .nav .btn span::after{content:"Anrufen";font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important}
+}

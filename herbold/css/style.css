@@ -1,0 +1,217 @@
+/* Herbold-Dach · Entwurf Isik Designs
+   Leitmotiv: zwei Gewerke, Dach und Blech. Das Intro legt den roten Dachbalken aus dem Logo,
+   in den Leistungen schiebt sich das Blech in der Dachneigung über das Dach.
+   Farben: Rot aus dem Logo, Zinkgrau, reines Schwarz. Keine Linien. */
+
+@font-face{font-family:"Big Shoulders";font-weight:800;font-display:swap;src:url(../fonts/big-shoulders-display-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Big Shoulders";font-weight:900;font-display:swap;src:url(../fonts/big-shoulders-display-latin-900-normal.woff2) format("woff2")}
+@font-face{font-family:"Big Shoulders";font-weight:800 900;font-display:swap;src:url(../fonts/big-shoulders-display-latin-ext-800-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+1E00-1E9F}
+@font-face{font-family:"Albert Sans";font-weight:400;font-display:swap;src:url(../fonts/albert-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Albert Sans";font-weight:500;font-display:swap;src:url(../fonts/albert-sans-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Albert Sans";font-weight:600;font-display:swap;src:url(../fonts/albert-sans-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Albert Sans";font-weight:400;font-display:swap;src:url(../fonts/albert-sans-latin-ext-400-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+1E00-1E9F}
+
+:root{
+  --bg:#000;
+  --s1:#0e0f11;
+  --fg:#f3f3f1;
+  --fg2:#a9afb7;
+  --zinc:#c7ccd3;
+  --red:#c8261e;
+  --red2:#de3328;
+  --display:"Big Shoulders",Impact,"Arial Narrow",sans-serif;
+  --body:"Albert Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --gl:max(16px,env(safe-area-inset-left,0px));
+  --gr:max(16px,env(safe-area-inset-right,0px));
+  --pad:clamp(20px,4vw,64px);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 clamp(17px,1.15vw,19px)/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--red2);outline-offset:4px}
+.wrap{width:100%;max-width:1440px;margin:0 auto;padding-left:calc(var(--gl) + var(--pad) - 16px);padding-right:calc(var(--gr) + var(--pad) - 16px)}
+.eyebrow{font:600 13px/1.3 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--red2);margin:0}
+.eyebrow--light{color:#fff;opacity:.85}
+.h2{font:900 clamp(48px,6.4vw,112px)/.92 var(--display);text-transform:uppercase;letter-spacing:-.005em;margin:0;text-wrap:balance}
+.sw{display:inline-block;overflow:hidden;vertical-align:top;padding:.16em 0 .08em;margin:-.16em 0 -.08em}
+.sw>span{display:inline-block}
+.failsafe .sw>span{transform:none!important}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 30px;font:600 15px/1 var(--body);letter-spacing:.02em;text-decoration:none;transition:background .25s var(--ease),color .25s}
+.btn span{display:inline-block}
+.btn--red{background:var(--red);color:#fff}
+.btn--red:hover{background:var(--red2)}
+.btn--light{background:#fff;color:#000}
+.btn--light:hover{background:var(--zinc)}
+
+/* Intro: der rote Dachbalken aus dem Logo legt sich, darunter erscheint der Schriftzug */
+.intro{position:fixed;inset:0;z-index:100;background:#000;display:none;place-items:center}
+.js .intro{display:grid}
+.intro.is-done,.failsafe .intro,.no-intro .intro{display:none!important}
+.intro__in{position:relative;width:min(72vw,420px)}
+.intro__roof{position:absolute;left:3%;right:3%;top:-2%;width:94%;height:auto;aspect-ratio:300/30;overflow:visible}
+.intro__roof polygon{fill:var(--red)}
+.intro__logo{width:100%;height:auto}
+
+.nav{position:fixed;left:0;right:0;top:0;z-index:50;padding-top:env(safe-area-inset-top,0px);transition:background .4s var(--ease),transform .5s var(--ease)}
+.nav.is-solid{background:rgba(0,0,0,.95)}
+.nav.is-hidden{transform:translateY(-100%)}
+.nav__in{display:flex;align-items:center;gap:24px;min-height:88px}
+.nav__logo img{height:46px;width:auto}
+.nav__links{display:flex;gap:32px;margin-left:auto}
+.nav__links a{text-decoration:none;font-weight:500;color:var(--fg2);transition:color .2s}
+.nav__links a:hover{color:var(--fg)}
+
+/* Hero */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden}
+.hero__media{position:absolute;inset:0}
+.js .hero__media{clip-path:polygon(0 100%,100% 100%,100% 100%,0 100%)}
+.failsafe .hero__media{clip-path:none!important}
+.hero__img{width:100%;height:100%;object-fit:cover;object-position:60% 50%}
+.hero__shade{position:absolute;inset:0;background:rgba(0,0,0,.55)}
+.hero__in{position:relative;padding-block:150px clamp(48px,6vw,88px)}
+.hero__title{margin:0;font:900 clamp(66px,10.4vw,186px)/.86 var(--display);text-transform:uppercase}
+.hero__kicker{display:block;font:600 14px/1.3 var(--body);letter-spacing:.2em;color:var(--zinc);margin-bottom:26px}
+.hl{display:block;overflow:hidden;padding:.16em 0 .04em;margin:-.16em 0 -.04em}
+.hw{display:inline-block}
+.hw em{font-style:normal;color:var(--red2)}
+.hero__row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end;margin-top:clamp(28px,4vw,52px)}
+.hero__lead{margin:0;max-width:46ch;font-size:clamp(17px,1.35vw,20px);color:#dfe2e6}
+.hero__cta{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+.hero__rating{margin:0;display:flex;align-items:baseline;gap:10px;font-size:14px;color:var(--fg2)}
+.hero__rating strong{font:900 34px/1 var(--display);color:var(--fg)}
+.stars{color:var(--red2);letter-spacing:.08em}
+
+/* Zahlen */
+.facts{padding-block:clamp(80px,9vw,140px) 0}
+.facts__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,64px)}
+.fact__n{display:block;font:900 clamp(72px,9vw,150px)/.85 var(--display);color:var(--fg)}
+.fact__t{display:block;margin-top:14px;color:var(--fg2);max-width:24ch}
+
+/* Signatur: Dach und Blech */
+.duo__pin{min-height:100svh;display:flex;align-items:center;padding-block:clamp(96px,10vw,140px)}
+.duo__grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(40px,6vw,100px);align-items:center}
+.duo__words{margin:14px 0 clamp(28px,3vw,44px);font:900 clamp(96px,13vw,230px)/.8 var(--display);text-transform:uppercase;display:flex;flex-direction:column}
+.w{transition:color .6s var(--ease)}
+.w--dach{color:var(--fg)}
+.w--blech{color:#26282c}
+.duo.is-blech .w--dach{color:#26282c}
+.duo.is-blech .w--blech{color:var(--zinc)}
+.duo__lists{display:grid}
+.lst{grid-area:1/1}
+.lst h3{margin:0 0 14px;font:800 clamp(28px,2.4vw,40px)/1 var(--display);text-transform:uppercase;color:var(--red2)}
+.lst ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;color:#d9dce0}
+.lst li{padding-left:22px;position:relative}
+.lst li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;background:var(--red)}
+.lst__img{display:none;margin:0 0 22px}
+.duo__media{position:relative;aspect-ratio:1/1;max-width:640px;margin-left:auto;width:100%;overflow:hidden;background:var(--s1)}
+.duo__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.duo__img--blech{clip-path:polygon(100% 100%,100% 100%,100% 100%)}
+
+/* Arbeiten */
+.work{padding-block:clamp(110px,12vw,190px)}
+.work__head{max-width:1000px;margin-bottom:clamp(44px,5vw,80px)}
+.work__head .h2{margin-top:16px}
+.work__grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(14px,1.6vw,24px);align-items:start}
+.wk{margin:0}
+.wk__in{overflow:hidden;background:var(--s1)}
+.wk img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.wk:hover img{transform:scale(1.04)}
+.wk figcaption{margin-top:12px;font:600 13px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--fg2)}
+.wk--a{grid-column:1/8}.wk--a .wk__in{aspect-ratio:3/2}
+.wk--b{grid-column:8/13;margin-top:18%}.wk--b .wk__in{aspect-ratio:3/2}
+.wk--c{grid-column:2/7}.wk--c .wk__in{aspect-ratio:4/5}
+.wk--d{grid-column:7/13;margin-top:10%}.wk--d .wk__in{aspect-ratio:4/3}
+.wk--e{grid-column:1/6}.wk--e .wk__in{aspect-ratio:4/3}
+.wk--f{grid-column:6/12;margin-top:-6%}.wk--f .wk__in{aspect-ratio:3/2}
+
+/* Betrieb */
+.about{background:var(--s1);padding-block:clamp(100px,12vw,180px)}
+.about__grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,100px);align-items:center}
+.about__img{margin:0;overflow:hidden;aspect-ratio:4/5}
+.about__img img{width:100%;height:116%;object-fit:cover}
+.about__copy .h2{margin:16px 0 28px}
+.about__copy p{margin:0 0 18px;max-width:48ch;color:var(--fg2)}
+.about__partners{margin-top:clamp(28px,3vw,44px)!important;color:var(--fg)!important;font-weight:500}
+.about__partners span{display:block;font:600 12px/1.3 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--red2);margin-bottom:8px}
+
+/* Karriere */
+.career{position:relative;overflow:hidden;padding-block:clamp(120px,14vw,220px)}
+.career__media{position:absolute;inset:0}
+.career__media img{width:100%;height:120%;object-fit:cover;opacity:.32}
+.career__in{position:relative}
+.career__title{margin:16px 0 clamp(32px,4vw,56px);font:900 clamp(54px,8vw,140px)/.88 var(--display);text-transform:uppercase;max-width:12ch}
+.career__row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);max-width:1100px;margin-bottom:clamp(32px,4vw,52px)}
+.career__jobs{list-style:none;margin:0;padding:0;display:grid;gap:6px;font:800 clamp(26px,2.4vw,38px)/1.1 var(--display);text-transform:uppercase}
+.career__row p{margin:0;color:#dfe2e6}
+
+/* Kontakt in Logorot */
+.contact{background:var(--red);color:#fff}
+.contact__grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(40px,6vw,96px);align-items:end;padding-block:clamp(96px,12vw,170px)}
+.contact__title{margin:16px 0 clamp(28px,3vw,44px);font:900 clamp(56px,7.6vw,132px)/.88 var(--display);text-transform:uppercase;text-wrap:balance}
+.contact__phone{display:inline-block;font:900 clamp(46px,5.6vw,96px)/1 var(--display);text-decoration:none}
+.contact__facts{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 32px}
+.contact__facts dt{font:600 12px/1.3 var(--body);letter-spacing:.2em;text-transform:uppercase;opacity:.8;margin-bottom:8px}
+.contact__facts dd{margin:0;font-weight:500;font-size:clamp(17px,1.25vw,19px)}
+.contact__facts a{text-decoration:none}
+
+.foot{padding-block:40px calc(40px + env(safe-area-inset-bottom,0px))}
+.foot__in{display:flex;align-items:center;justify-content:space-between;gap:16px 32px;flex-wrap:wrap;color:var(--fg2);font-size:15px}
+.foot__in img{height:40px;width:auto}
+.foot p{margin:0}
+.foot__draft{font:600 11px/1.4 var(--body);letter-spacing:.18em;text-transform:uppercase}
+.foot__draft a{text-decoration:none;color:var(--fg)}
+.callbar{display:none}
+
+.js [data-hero],.js .rv{opacity:0}
+.js .hw{transform:translateY(108%)}
+.failsafe [data-hero],.failsafe .rv{opacity:1!important;transform:none!important}
+.failsafe .hw{transform:none!important}
+
+@media (min-width:961px){
+  .js .lst--blech{opacity:0;visibility:hidden}
+  .js .duo.is-blech .lst--dach{opacity:0;visibility:hidden}
+  .js .duo.is-blech .lst--blech{opacity:1;visibility:visible}
+  .failsafe .lst{opacity:1!important;visibility:visible!important;grid-area:auto}
+  .failsafe .duo__lists{gap:40px}
+  .failsafe .duo__img--blech{clip-path:polygon(0 30%,100% 0,100% 100%,0 100%)!important}
+}
+
+@media (max-width:960px){
+  .nav__links{display:none}
+  .nav__in{justify-content:space-between;min-height:70px}
+  .nav__logo img{height:38px}
+  .nav .btn{min-height:44px;padding:0 16px;font-size:13px}
+  .hero{min-height:92svh}
+  .hero__row,.duo__grid,.about__grid,.contact__grid,.career__row{grid-template-columns:minmax(0,1fr)}
+  .facts__grid{grid-template-columns:minmax(0,1fr);gap:36px}
+  .duo__pin{min-height:0}
+  .duo__media{display:none}
+  .duo__words{font-size:clamp(84px,24vw,150px)}
+  .w--blech{color:var(--zinc)}
+  .duo__lists{gap:64px}
+  .lst{grid-area:auto}
+  .lst__img{display:block;aspect-ratio:4/3;overflow:hidden}
+  .lst__img img{width:100%;height:100%;object-fit:cover}
+  .work__grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .wk{grid-column:auto!important;margin-top:0!important}
+  .wk--a,.wk--d{grid-column:1/-1!important}
+  .wk .wk__in{aspect-ratio:4/3!important}
+  .about__img{aspect-ratio:4/3}
+  .callbar{display:flex;justify-content:center;position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--red);color:#fff;text-decoration:none;font:600 16px/1 var(--body);padding:18px var(--gr) calc(18px + env(safe-area-inset-bottom,0px)) var(--gl)}
+  .foot{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:560px){
+  .nav .btn span{font-size:0}
+  .nav .btn span::after{content:"Anrufen";font-size:13px}
+  .contact__facts{grid-template-columns:minmax(0,1fr)}
+  .wk figcaption{font-size:11px;letter-spacing:.1em}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important}
+}
