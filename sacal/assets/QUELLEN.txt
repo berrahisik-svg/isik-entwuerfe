@@ -1,0 +1,23 @@
+Bild- und Videoquellen, Entwurf Karosseriebetrieb Sacal (Stand 28.10.2026)
+Alle Motive sind Symbolbilder, keine Aufnahmen aus dem Betrieb Sacal.
+Vor dem Livegang möglichst durch eigene Fotos aus der Werkstatt ersetzen.
+
+FOTOS (Unsplash-Lizenz: kostenlos, auch kommerziell, Namensnennung nicht Pflicht, https://unsplash.com/license)
+- img/hero-karosserie.webp      Zoshua Colah, "A person sanding the rear panel of a grey car in a workshop"
+                                 https://unsplash.com/photos/person-sanding-car-in-workshop-CNciVh_m1rU (zugeschnitten)
+- img/unfall-stossfaenger.webp  Zoshua Colah, "A person repairing a car bumper in a workshop"
+                                 https://unsplash.com/photos/person-repairing-car-bumper-in-workshop-Oy2FhY6oA2s (zugeschnitten, Kennzeichen entfernt)
+- img/lack-vorbereitung.webp    Zoshua Colah, "A person sanding the rear panel of a grey car in a workshop"
+                                 https://unsplash.com/photos/person-sanding-car-in-workshop-zyLW2erHdRg (Ausschnitt, Kennzeichen entfernt)
+- img/karosserie-rohbau.webp    Egor Vikhrev, "white vintage car in garage"
+                                 https://unsplash.com/photos/white-vintage-car-in-garage-S0cqn0mZU0E
+- img/werkstatt-hebebuehne.webp Tommy Anderson, "an orange car is parked in a garage"
+                                 https://unsplash.com/photos/an-orange-car-is-parked-in-a-garage-qyZk3H8B4RQ
+- img/pruefung-hebebuehne.webp  KC Shum, "Orange classic car being repaired in garage"
+                                 https://unsplash.com/photos/orange-classic-car-being-repaired-in-garage-r0w0s1wEpjI (zugeschnitten)
+
+VIDEO (Mixkit Stock Video Free License: kostenlos, auch kommerziell, ohne Namensnennung, https://mixkit.co/license/#videoFree)
+- video/werkstatt.mp4 + werkstatt.jpg (Posterbild)
+                                 Mixkit Clip 13260, "Mechanic working in the bottom of a car"
+                                 https://mixkit.co/free-stock-video/mechanic-working-in-the-bottom-of-a-car-13260/
+                                 (10 s Ausschnitt, ohne Ton, 1280 px, H.264)

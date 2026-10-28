@@ -33,7 +33,7 @@
 
   /* Signatur: Messpunkte. Eine Delle zieht sich glatt, am Desktop drückt die Maus eine neue hinein. */
   var cv = document.getElementById('grid'), ctx = cv && cv.getContext ? cv.getContext('2d') : null;
-  var dent = { x: 0.62, y: 0.55, s: reduced ? 0 : 1 }, mouse = { x: -9, y: -9, s: 0 }, W, Hh, DPR;
+  var dent = { x: 0.34, y: 0.6, s: reduced ? 0 : 1 }, mouse = { x: -9, y: -9, s: 0 }, W, Hh, DPR;
   function size() { DPR = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; Hh = cv.clientHeight; cv.width = W * DPR; cv.height = Hh * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0); }
   function draw() {
     if (!ctx) return;
@@ -50,6 +50,8 @@
   }
   if (ctx) { size(); draw(); addEventListener('resize', function () { size(); draw(); }); }
 
+  var vid = document.querySelector('.band__v');
+  if (vid && reduced) { vid.removeAttribute('autoplay'); try { vid.pause(); } catch (e) {} }
   if (!window.gsap || !window.ScrollTrigger || reduced) { d.classList.add('failsafe'); dent.s = 0; draw(); return; }
   clearTimeout(window.__failsafe);
   gsap.registerPlugin(ScrollTrigger);
@@ -61,39 +63,27 @@
     cv.parentElement.addEventListener('mouseleave', function () { gsap.to(mouse, { s: 0, duration: 0.8, overwrite: 'auto' }); });
   }
 
-  if (!touch && window.Lenis) {
-    var lenis = new Lenis({ duration: 1.15, smoothWheel: true });
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add(function (t) { lenis.raf(t * 1000); }); gsap.ticker.lagSmoothing(0);
-    document.querySelectorAll('a[href^="#"]').forEach(function (a) { a.addEventListener('click', function (e) { var id = a.getAttribute('href'); if (id.length > 1 && document.querySelector(id)) { e.preventDefault(); lenis.scrollTo(id, { offset: -60 }); } }); });
-  }
+  /* Anker-Sprünge weich, ohne Scroll-Bibliothek (native Scrollposition bleibt verlässlich) */
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) { a.addEventListener('click', function (e) { var id = a.getAttribute('href'), t = id.length > 1 && document.querySelector(id); if (t) { e.preventDefault(); scrollTo({ top: t.getBoundingClientRect().top + scrollY - 60, behavior: 'smooth' }); } }); });
 
   document.querySelectorAll('.split').forEach(function (el) {
     var txt = el.textContent.trim(); el.setAttribute('aria-label', txt);
-    el.innerHTML = txt.split(/\s+/).map(function (w) { return '<span class="sw" aria-hidden="true"><span>' + w + '</span></span>'; }).join(' ');
+    el.innerHTML = txt.split(/[ \t\n]+/).map(function (w) { return '<span class="sw" aria-hidden="true"><span>' + w + '</span></span>'; }).join(' ');
     var w = el.querySelectorAll('.sw > span'); gsap.set(w, { yPercent: 110 });
     gsap.to(w, { yPercent: 0, duration: 1.1, ease: E, stagger: 0.05, scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
   });
   gsap.utils.toArray('.rv').forEach(function (el, i) { gsap.to(el, { opacity: 1, y: 0, duration: 1, ease: E, delay: (i % 3) * 0.07, scrollTrigger: { trigger: el, start: 'top 90%', once: true } }); });
 
-  var hero = gsap.timeline({ paused: true, defaults: { ease: E } });
-  hero.to('.ln', { y: 0, duration: 1.2, stagger: 0.1 })
-      .to(dent, { s: 0, duration: 2.4, ease: 'elastic.out(1,0.5)', onUpdate: touch ? draw : null }, 0.3)
-      .to('[data-hero]', { opacity: 1, duration: 0.9, stagger: 0.08 }, 0.5)
-      .from('[data-hero]', { y: 20, duration: 1, stagger: 0.08 }, 0.5);
-
-  var intro = document.getElementById('intro');
-  if (intro && !d.classList.contains('no-intro')) {
-    var w = intro.querySelector('.intro__w'); w.innerHTML = w.textContent.split('').map(function (c) { return '<span>' + c + '</span>'; }).join('');
-    var L = w.querySelectorAll('span');
-    gsap.set(L, { y: function (i) { return [18, -26, 10, -14, 22][i % 5]; }, rotate: function (i) { return [-8, 6, -4, 9, -6][i % 5]; } });
-    gsap.timeline()
-      .from(L, { opacity: 0, duration: 0.4, stagger: 0.05 })
-      .to(L, { y: 0, rotate: 0, duration: 0.9, ease: 'elastic.out(1,0.55)', stagger: 0.04 }, 0.35)
-      .to(intro, { clipPath: 'inset(0 0 100% 0)', duration: 0.8, ease: 'power3.inOut' }, '+=0.2')
-      .add(function () { hero.play(); }, '<0.25')
-      .add(function () { intro.classList.add('is-done'); try { sessionStorage.setItem('intro-seen', '1'); } catch (e) {} });
-  } else hero.play();
+  /* Laden: Überschrift steht ab dem ersten Bild, der Rest kommt bis 1 s dazu. */
+  var hero = gsap.timeline({ defaults: { ease: E } });
+  hero.to('[data-hero]', { opacity: 1, y: 0, duration: 0.7, stagger: 0.08 }, 0.1)
+      .from('.hero__pic img', { scale: 1.12, duration: 1.6, ease: 'power3.out' }, 0)
+      .to(dent, { s: 0, duration: 2.4, ease: 'elastic.out(1,0.5)', onUpdate: touch ? draw : null }, 0.3);
+  /* Hero-Bild driftet beim Scrollen leicht */
+  gsap.to('.hero__pic img', { yPercent: 8, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.utils.toArray('.svc__i .pic img, .unfall__pic img').forEach(function (img) {
+    gsap.fromTo(img, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: true } });
+  });
 
   /* „Gerade.“ richtet sich beim Scrollen auf */
   gsap.to('[data-align]', { rotate: 0, skewX: 0, ease: 'none', scrollTrigger: { trigger: '.unfall', start: 'top 80%', end: 'center 50%', scrub: true } });

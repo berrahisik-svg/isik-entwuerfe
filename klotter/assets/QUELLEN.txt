@@ -1,0 +1,20 @@
+Bild- und Videoquellen, Entwurf Abschleppdienst Klotter (Stand 28.10.2026)
+
+EIGENES FOTO DES BETRIEBS
+- img/flotte.webp       Betriebsgebäude Flugstraße 14 mit Flotte, Facebook-Titelbild von Abschleppdienst Klotter
+                        https://www.facebook.com/Abschleppdienst.Baden.Baden/
+- img/logo-klotter.png  Original-Logo (Facebook-Profilbild)
+
+VIDEOS (Mixkit Stock Video Free License: kostenlos, auch kommerziell, ohne Namensnennung, https://mixkit.co/license/#videoFree)
+Alle Clips sind Symbolbilder, keine Aufnahmen von Klotter. Gekürzt auf 8 s, ohne Ton, 1280 px, mit Posterbild (.jpg).
+- video/nacht.mp4        Nachtfahrt aus dem Cockpit (Hero), aus dem ersten Entwurf übernommen, Mixkit
+- video/bergung.mp4      Mixkit #49147 "Trailer crash on a highway"                https://mixkit.co/free-stock-video/trailer-crash-on-a-highway-49147/
+- video/anrufen.mp4      Mixkit #47968 "Woman talking on the phone stressed next to a broken down car"
+                                                                                     https://mixkit.co/free-stock-video/woman-talking-on-the-phone-stressed-next-to-a-broken-down-47968/
+- video/warnblinker.mp4  Mixkit #27695 "Hazard lights flashing on a car"            https://mixkit.co/free-stock-video/hazard-lights-flashing-on-a-car-27695/
+- video/lkw-nacht.mp4    Mixkit #17228 "Driving a truck through the night"          https://mixkit.co/free-stock-video/driving-a-truck-through-the-night-17228/
+- video/oldtimer.mp4     Mixkit #28995 "Vintage car driving between trees"          https://mixkit.co/free-stock-video/vintage-car-driving-between-trees-28995/
+- video/autobahn.mp4     Mixkit #45260 "Traffic along a highway on a rainy night"   https://mixkit.co/free-stock-video/traffic-along-a-highway-on-a-rainy-night-45260/
+
+Hinweis: Die offenen Archive (Wikimedia Commons, Openverse) waren am 28.10.2026 nicht erreichbar (Rate-Limit),
+deshalb kein Archivfoto vom Borgward B2000. Eigene Fotos und Clips vom Betrieb wären vor dem Livegang die beste Lösung.
